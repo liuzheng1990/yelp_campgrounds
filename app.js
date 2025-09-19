@@ -5,6 +5,9 @@ const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
 
+
+const Campground = require('./models/campground');
+
 const app = express();
 
 // Connect to MongoDB
@@ -33,6 +36,17 @@ app.set('views', path.join(__dirname, 'views'));
 // Basic route
 app.get('/', (req, res) => {
     res.render('index', { title: 'Yelp Campgrounds' });
+});
+
+app.get('/campground', async (req, res) => {
+    const ubin = new Campground({
+        title: 'Ubin',
+        price: 10,
+        description: 'A beautiful island',
+        location: 'Singapore'
+    });
+    await ubin.save();
+    res.send(ubin);
 });
 
 // Error handling
