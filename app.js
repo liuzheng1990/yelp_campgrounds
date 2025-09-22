@@ -5,11 +5,17 @@ const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const ejsMate = require('ejs-mate');
 
 
 const Campground = require('./models/campground');
 
 const app = express();
+
+// View engine setup (EJS)
+app.engine('ejs', ejsMate);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
@@ -27,10 +33,6 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
 }));
-
-// View engine setup (EJS)
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 
 // Basic route
 app.get('/', (req, res) => {
